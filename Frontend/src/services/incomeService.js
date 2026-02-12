@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/income";
+const API_URL = import.meta.env.VITE_API_URL + "/api/income" || "http://localhost:8000/api/income";
 
 // Configure axios instance with defaults
 const api = axios.create({
