@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_BASE_URL } from "./api";
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL + "/api/user",
+    baseURL: API_BASE_URL + "/api/user",
     withCredentials: true
 })
 
@@ -11,7 +12,7 @@ export const getUserData = async () => {
 }
 
 export const updateUsername = async (username) => {
-    const response = await api.put("/update-username", {username});
+    const response = await api.put("/update-username", { username });
     return response.data;
 }
 

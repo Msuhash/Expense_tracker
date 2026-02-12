@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from 'react-redux';
 import { setIsLoading } from '../../store/slices/uiSlice';
-import axios from 'axios';
+import { checkIsAuth } from '../../services/authServices';
 import { toast } from 'react-toastify';
 import ResetOtpPage from './ResetOtpPage.jsx';
 import ResetPasswordPage from './ResetPasswordPage.jsx';
@@ -29,17 +29,15 @@ const ResetEmailPage = () => {
   const submitData = async (data) => {
     try {
 
-      const res = await axios.post("http://localhost:8000/api/auth/isauth", {}, {
-        withCredentials: true
-      })
+      const res = await checkIsAuth()
 
-      if (res.data.success) {
+      if (res.success) {
         toast.success("Your Account is Verified")
         setEmail(data.email)
         setStep('otp')
       }
       else {
-        toast.error(res.data?.message || "something went wrong")
+        toast.error(res?.message || "something went wrong")
       }
 
     }

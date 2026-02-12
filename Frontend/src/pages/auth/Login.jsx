@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import { FourSquare } from 'react-loading-indicators'
 import { setIsLoading } from '../../store/slices/uiSlice'
-import axios from 'axios'
+import { login } from '../../services/authServices'
 import { useNavigate } from 'react-router-dom'
 
 import { fetchUserData } from '../../store/slices/authSlice'
@@ -17,21 +17,18 @@ const Login = ({ setShowPages }) => {
   const navigate = useNavigate()
 
   const handleLoginData = async (loginData) => {
-    console.log(loginData)
     dispatch(setIsLoading(true))
 
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/login", loginData, {
-        withCredentials: true
-      })
+      const res = await login(loginData)
 
-      if (res.data.success) {
+      if (res.success) {
         dispatch(fetchUserData())
         toast.success("Login Successfully")
         navigate("/dashboard")
       }
       else {
-        toast.error(res.data?.message || "something went wrong")
+        toast.error(res?.message || "something went wrong")
       }
     }
     catch (error) {
@@ -40,8 +37,9 @@ const Login = ({ setShowPages }) => {
     finally {
       dispatch(setIsLoading(false))
     }
-
   }
+
+
 
   if (isLoading) {
     return (

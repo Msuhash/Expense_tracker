@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_BASE_URL } from "./api";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + "/api/budget";
+const API_URL = API_BASE_URL + "/api/budget";
 
 const api = axios.create({
     baseURL: API_URL,
@@ -17,7 +18,7 @@ export const getBudget = async () => {
     return response.data;
 }
 
-export const getSummary = async() => {
+export const getSummary = async () => {
     const response = await api.get("/summary-budget");
     return response.data;
 }
