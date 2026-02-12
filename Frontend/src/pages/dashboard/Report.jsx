@@ -13,7 +13,7 @@ import RecentTransaction from '../../components/report & analytics/RecentTransac
 import { fetchCategories } from '@/store/slices/categorySlice';
 import AddIncomeForm from '@/components/income/forms/AddIncomeForm';
 import AddExpenseForm from '@/components/expense/forms/AddExpenseForm';
-import AddCategory from '@/components/category/forms/AddCategory';
+import AddCategory from '@/components/category/forms/Addcategory';
 
 
 
