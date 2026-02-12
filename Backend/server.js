@@ -44,3 +44,7 @@ app.use("/api/budget", budgetRouter)
 app.use("/api/export", exportRouter)
 
 app.listen(PORT, () => { console.log(`server is running successfully ${PORT}`) })
+
+app.get("/", (req, res) => {
+  res.send("Expense Tracker API Running");
+});
