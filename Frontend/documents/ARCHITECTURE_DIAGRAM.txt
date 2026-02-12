@@ -1,0 +1,251 @@
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         INCOME MANAGEMENT ARCHITECTURE                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              FRONTEND (React)                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │                        COMPONENT LAYER                              │    │
+│  │  (Income.jsx, IncomeList.jsx, IncomeForm.jsx, etc.)                │    │
+│  │                                                                      │    │
+│  │  - useDispatch() to trigger actions                                 │    │
+│  │  - useSelector() to access state                                    │    │
+│  │  - Handle UI interactions                                           │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+│                                    ↕                                         │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │                         REDUX STORE                                 │    │
+│  │                    (Store.js)                                       │    │
+│  │                                                                      │    │
+│  │  Reducers:                                                          │    │
+│  │  - ui: uiSlice                                                      │    │
+│  │  - auth: authSlice                                                  │    │
+│  │  - income: incomeSlice  ← NEW!                                     │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+│                                    ↕                                         │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │                      INCOME SLICE                                   │    │
+│  │              (slices/incomeSlice.js)                                │    │
+│  │                                                                      │    │
+│  │  STATE:                                                             │    │
+│  │  ├─ income: []                                                      │    │
+│  │  ├─ currentIncome: null                                             │    │
+│  │  ├─ loading: false                                                  │    │
+│  │  ├─ error: null                                                     │    │
+│  │  ├─ pagination: { total, totalPages, currentPage, limit, hasMore } │    │
+│  │  └─ filters: { category, minAmount, maxAmount, startDate, endDate }│    │
+│  │                                                                      │    │
+│  │  ASYNC THUNKS:                                                      │    │
+│  │  ├─ fetchIncome(params)                                             │    │
+│  │  ├─ addIncome(data)                                                 │    │
+│  │  ├─ updateIncome({ id, data })                                      │    │
+│  │  ├─ deleteIncome(id)                                                │    │
+│  │  └─ fetchIncomeById(id)                                             │    │
+│  │                                                                      │    │
+│  │  ACTIONS:                                                           │    │
+│  │  ├─ setFilters(filters)                                             │    │
+│  │  ├─ resetFilters()                                                  │    │
+│  │  ├─ setCurrentPage(page)                                            │    │
+│  │  ├─ setLimit(limit)                                                 │    │
+│  │  ├─ clearCurrentIncome()                                            │    │
+│  │  ├─ clearError()                                                    │    │
+│  │  └─ resetIncomeState()                                              │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+│                                    ↕                                         │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │                      SERVICE LAYER                                  │    │
+│  │              (services/IncomeService.js)                            │    │
+│  │                                                                      │    │
+│  │  API Methods:                                                       │    │
+│  │  ├─ getIncome(params)        → GET /api/income/get                 │    │
+│  │  ├─ addIncome(data)           → POST /api/income/add                │    │
+│  │  ├─ updateIncome(id, data)    → PUT /api/income/update/:id         │    │
+│  │  ├─ deleteIncome(id)          → DELETE /api/income/delete/:id      │    │
+│  │  └─ getIncomeById(id)         → GET /api/income/get/:id            │    │
+│  │                                                                      │    │
+│  │  - Builds query parameters                                          │    │
+│  │  - Makes axios HTTP requests                                        │    │
+│  │  - Returns response data                                            │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+                                    ↕
+                            HTTP Requests (axios)
+                                    ↕
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           BACKEND (Node.js/Express)                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │                         ROUTES LAYER                                │    │
+│  │                  (routes/incomeRouter.js)                           │    │
+│  │                                                                      │    │
+│  │  POST   /api/income/add         → addIncome                        │    │
+│  │  GET    /api/income/get         → getIncome (with filters)         │    │
+│  │  GET    /api/income/get/:id     → getIncomeById                    │    │
+│  │  PUT    /api/income/update/:id  → updateIncome                     │    │
+│  │  DELETE /api/income/delete/:id  → deleteIncome                     │    │
+│  │                                                                      │    │
+│  │  Middleware: tokenDecoder (authentication)                          │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+│                                    ↕                                         │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │                      CONTROLLER LAYER                               │    │
+│  │              (controllers/incomeController.js)                      │    │
+│  │                                                                      │    │
+│  │  getIncome(req, res):                                               │    │
+│  │  ├─ Extract query params (category, minAmount, maxAmount, etc.)    │    │
+│  │  ├─ Build MongoDB filter object                                     │    │
+│  │  ├─ Calculate pagination (skip, limit)                              │    │
+│  │  ├─ Query database with filters & pagination                        │    │
+│  │  ├─ Count total documents                                           │    │
+│  │  └─ Return { data: [...], pagination: {...} }                      │    │
+│  │                                                                      │    │
+│  │  addIncome(req, res):                                               │    │
+│  │  ├─ Validate required fields                                        │    │
+│  │  ├─ Create new Income document                                      │    │
+│  │  └─ Save to database                                                │    │
+│  │                                                                      │    │
+│  │  updateIncome(req, res):                                            │    │
+│  │  ├─ Validate request body                                           │    │
+│  │  ├─ Find and update document                                        │    │
+│  │  └─ Return updated document                                         │    │
+│  │                                                                      │    │
+│  │  deleteIncome(req, res):                                            │    │
+│  │  ├─ Find document by ID                                             │    │
+│  │  └─ Delete from database                                            │    │
+│  │                                                                      │    │
+│  │  getIncomeById(req, res):                                           │    │
+│  │  ├─ Find document by ID                                             │    │
+│  │  └─ Return document                                                 │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+│                                    ↕                                         │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │                         MODEL LAYER                                 │    │
+│  │                    (models/Income.js)                               │    │
+│  │                                                                      │    │
+│  │  Schema:                                                            │    │
+│  │  ├─ userId: ObjectId (ref: User, required)                         │    │
+│  │  ├─ amount: Number (required)                                       │    │
+│  │  ├─ category: String (required)                                     │    │
+│  │  ├─ description: String (optional)                                  │    │
+│  │  ├─ date: Date (required)                                           │    │
+│  │  ├─ type: String (default: "income")                                │    │
+│  │  └─ timestamps: true (createdAt, updatedAt)                         │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+│                                    ↕                                         │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │                         DATABASE                                    │    │
+│  │                        (MongoDB)                                    │    │
+│  │                                                                      │    │
+│  │  Collections:                                                       │    │
+│  │  └─ incomes                                                         │    │
+│  │     ├─ Indexed by userId                                            │    │
+│  │     ├─ Supports filtering (category, amount, date)                  │    │
+│  │     └─ Supports pagination (skip, limit)                            │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              DATA FLOW EXAMPLES                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  EXAMPLE 1: Fetch Income with Filters                                       │
+│  ──────────────────────────────────────                                     │
+│  Component → dispatch(fetchIncome({                                          │
+│                category: 'Salary',                                           │
+│                minAmount: 1000,                                              │
+│                page: 1,                                                      │
+│                limit: 10                                                     │
+│              }))                                                             │
+│           ↓                                                                  │
+│  Redux Slice → Calls IncomeService.getIncome(params)                        │
+│           ↓                                                                  │
+│  Service → axios.get('/api/income/get?category=Salary&minAmount=1000...')   │
+│           ↓                                                                  │
+│  Backend → getIncome controller                                             │
+│           ↓                                                                  │
+│  Controller → Builds filter: { userId, category: 'Salary', amount: {$gte} } │
+│           ↓                                                                  │
+│  Database → Income.find(filter).skip(0).limit(10)                           │
+│           ↓                                                                  │
+│  Response → { data: [...], pagination: {...} }                              │
+│           ↓                                                                  │
+│  Redux Slice → Updates state.income and state.pagination                    │
+│           ↓                                                                  │
+│  Component → Re-renders with new data                                       │
+│                                                                              │
+│  ────────────────────────────────────────────────────────────────────       │
+│                                                                              │
+│  EXAMPLE 2: Add Income                                                      │
+│  ──────────────────────                                                     │
+│  Component → dispatch(addIncome({ amount: 5000, category: 'Salary', ... })) │
+│           ↓                                                                  │
+│  Redux Slice → Calls IncomeService.addIncome(data)                          │
+│           ↓                                                                  │
+│  Service → axios.post('/api/income/add', data)                              │
+│           ↓                                                                  │
+│  Backend → addIncome controller                                             │
+│           ↓                                                                  │
+│  Controller → Creates new Income document                                   │
+│           ↓                                                                  │
+│  Database → income.save()                                                   │
+│           ↓                                                                  │
+│  Response → { message: 'Income added successfully' }                        │
+│           ↓                                                                  │
+│  Redux Slice → Auto-refreshes list with current filters                     │
+│           ↓                                                                  │
+│  Component → Shows updated list                                             │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            FILTER & PAGINATION FLOW                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  User Action: Apply Filters                                                 │
+│  ────────────────────────────                                               │
+│  1. User enters filter values in UI                                         │
+│  2. Component calls: dispatch(setFilters({ category: 'Salary' }))           │
+│  3. Redux updates state.filters                                             │
+│  4. Component calls: dispatch(fetchIncome({ ...filters, page: 1 }))         │
+│  5. Backend receives query params                                           │
+│  6. Backend builds MongoDB filter                                           │
+│  7. Backend queries database with filter                                    │
+│  8. Backend returns filtered & paginated results                            │
+│  9. Redux updates state.income and state.pagination                         │
+│  10. Component re-renders with filtered data                                │
+│                                                                              │
+│  User Action: Change Page                                                   │
+│  ──────────────────────────                                                 │
+│  1. User clicks "Next Page" button                                          │
+│  2. Component calls: dispatch(setCurrentPage(2))                            │
+│  3. Component calls: dispatch(fetchIncome({ ...filters, page: 2 }))         │
+│  4. Backend receives page=2 in query params                                 │
+│  5. Backend calculates skip = (2-1) * 10 = 10                               │
+│  6. Backend queries: Income.find(filter).skip(10).limit(10)                 │
+│  7. Backend returns page 2 data                                             │
+│  8. Redux updates state with page 2 data                                    │
+│  9. Component shows page 2 items                                            │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              KEY FEATURES                                    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ✅ Complete CRUD Operations                                                │
+│  ✅ Category Filtering                                                      │
+│  ✅ Amount Range Filtering (min/max)                                        │
+│  ✅ Date Range Filtering (start/end)                                        │
+│  ✅ Pagination (10 items per page, configurable)                            │
+│  ✅ Auto-refresh after mutations                                            │
+│  ✅ Loading & Error states                                                  │
+│  ✅ Type-safe service layer                                                 │
+│  ✅ Well-documented code                                                    │
+│  ✅ Usage examples provided                                                 │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
