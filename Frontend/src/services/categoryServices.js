@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const categoryServices = axios.create({
-    baseURL: import.meta.env.VITE_API_URL + "/api/category" || "http://localhost:8000/api/category",
+    baseURL: import.meta.env.VITE_API_BASE_URL + "/api/category" || "http://localhost:8000/api/category",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
