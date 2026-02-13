@@ -35,7 +35,9 @@ const ResetPasswordPage = ({ onSuccess }) => {
         toast.error(res.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Reset failed");
+      if (!error.response || error.response.status !== 200) {
+        toast.error(error.response?.data?.message || "Reset failed");
+      }
     }
   }
 
