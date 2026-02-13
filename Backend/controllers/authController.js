@@ -233,7 +233,22 @@ export const verifyResetOtp = async (req, res) => {
 
 // to check is user authenticated
 export const isAuthenticated = async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.json({ success: false, message: "email not found" })
+    }
     try {
+        const user = await User.findOne({ email })
+
+        if (!user) {
+            return res.json({ success: false, message: "user not found" })
+        }
+
+        if (!user.isAccountVerified) {
+            return res.json({ success: false })
+        }
+
         return res.json({ success: true })
     }
     catch (error) {

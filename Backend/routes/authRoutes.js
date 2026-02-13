@@ -13,7 +13,7 @@ router.post("/send-verify-otp", tokenDecoder, createOtp)
 
 router.post("/verifyotp", tokenDecoder, verifyOtp)
 
-router.post("/isauth", tokenDecoder, isAuthenticated)
+router.post("/isauth", isAuthenticated)
 
 router.post("/send-reset-otp", sendResetOtp)
 

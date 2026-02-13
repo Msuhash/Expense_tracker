@@ -26,8 +26,8 @@ export const verifyOtp = async (otpData) => {
     return response.data;
 };
 
-export const checkIsAuth = async () => {
-    const response = await api.post("/isauth");
+export const checkIsAuth = async (email) => {
+    const response = await api.post("/isauth", { email });
     return response.data;
 };
 

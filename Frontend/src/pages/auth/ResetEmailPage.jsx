@@ -27,13 +27,13 @@ const ResetEmailPage = () => {
   });
 
   const submitData = async (data) => {
+    setEmail(data.email)
     try {
 
-      const res = await checkIsAuth()
+      const res = await checkIsAuth(email)
 
       if (res.success) {
         toast.success("Your Account is Verified")
-        setEmail(data.email)
         setStep('otp')
       }
       else {
