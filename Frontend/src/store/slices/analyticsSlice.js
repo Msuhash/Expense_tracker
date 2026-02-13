@@ -5,7 +5,7 @@ const initialState = {
     summary: {},
     barMonthlyComparison: {},
     categoryDistribution: {},
-    trend: {},
+    trend: [],
     lineMonthlyComparison: {},
     recentTransaction: [],
     loading: false,
@@ -134,7 +134,11 @@ const analyticsSlice = createSlice({
             .addCase(fetchCategoryDistribution.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
-                state.categoryDistribution = action.payload || {};
+                const payload = action.payload || {};
+                state.categoryDistribution = {
+                    incomeCategories: Array.isArray(payload.incomeCategories) ? payload.incomeCategories : [],
+                    expenseCategories: Array.isArray(payload.expenseCategories) ? payload.expenseCategories : []
+                };
             })
             .addCase(fetchCategoryDistribution.rejected, (state, action) => {
                 state.loading = false;
@@ -150,7 +154,7 @@ const analyticsSlice = createSlice({
             .addCase(fetchTrend.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
-                state.trend = action.payload || {};
+                state.trend = Array.isArray(action.payload) ? action.payload : [];
             })
             .addCase(fetchTrend.rejected, (state, action) => {
                 state.loading = false;

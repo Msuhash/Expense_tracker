@@ -88,7 +88,7 @@ const CategoryTabs = () => {
                 </TabsList>
                 <TabsContent value="Expense">
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6'>
-                        {expenseCategories.map((category) => (
+                        {Array.isArray(expenseCategories) && expenseCategories.map((category) => (
                             <Card key={category._id} className='bg-black border-l-8 border-gray-800 transition-all duration-300 ease-in-out hover:scale-105' style={{ borderLeftColor: category.color }}>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -115,7 +115,7 @@ const CategoryTabs = () => {
                                 </CardHeader>
                                 <CardContent>
                                     {(() => {
-                                        const categoryBudget = budget.find(b => b.category.toLowerCase() === category.name.toLowerCase());
+                                        const categoryBudget = Array.isArray(budget) ? budget.find(b => (b.category || '').toLowerCase() === (category.name || '').toLowerCase()) : null;
                                         const percentage = categoryBudget ? (categoryBudget.amount / categoryBudget.limit) * 100 : 0;
                                         const amountSpent = Array.isArray(categoryDistribution?.expenseCategories) ? categoryDistribution.expenseCategories.find(item => item.category === category.name)?.amount || 0 : 0;
                                         return categoryBudget ? (
@@ -173,7 +173,7 @@ const CategoryTabs = () => {
                 </TabsContent>
                 <TabsContent value="Income">
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6'>
-                        {incomeCategories.map((category) => (
+                        {Array.isArray(incomeCategories) && incomeCategories.map((category) => (
                             <Card key={category._id} className='bg-black border-l-8 border-gray-800 transition-all duration-300 ease-in-out hover:scale-105' style={{ borderLeftColor: category.color }}>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -206,7 +206,7 @@ const CategoryTabs = () => {
                 </TabsContent>
                 <TabsContent value="Budget">
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6'>
-                        {budget.map((budg) => {
+                        {Array.isArray(budget) && budget.map((budg) => {
                             const percentage = Math.min((budg.amount / budg.limit) * 100, 100)
                             const now = new Date()
                             const endDate = new Date(budg.endDate)

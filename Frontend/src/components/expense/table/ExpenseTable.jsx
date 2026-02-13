@@ -117,10 +117,11 @@ const ExpenseTable = () => {
                                 </TableCell>
                                 <TableCell>
                                     {(() => {
-                                        const category = expenseCategories.find((category) => category.name === item.category);
+                                        const category = Array.isArray(expenseCategories) ? expenseCategories.find((cat) => cat.name === item.category) : null;
                                         return (
-                                            <span className="flex items-center gap-2">{category.icon}
-                                                <span>{category.name}</span>
+                                            <span className="flex items-center gap-2">
+                                                <span>{category?.icon || '📦'}</span>
+                                                <span>{category?.name || item.category}</span>
                                             </span>
                                         )
                                     })()}

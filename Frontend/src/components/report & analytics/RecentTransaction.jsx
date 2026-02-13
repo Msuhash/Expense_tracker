@@ -24,7 +24,7 @@ const RecentTransaction = () => {
 
     const getCategory = (transaction) => {
         const categories = transaction.type === 'income' ? incomeCategories : expenseCategories;
-        return categories.find(c => c.name === transaction.category);
+        return Array.isArray(categories) ? categories.find(c => c.name === transaction.category) : null;
     };
 
     return (
@@ -46,7 +46,7 @@ const RecentTransaction = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {recentTransaction.map((transaction, index) => {
+                            {Array.isArray(recentTransaction) && recentTransaction.map((transaction, index) => {
                                 const category = getCategory(transaction);
                                 return (
                                     <TableRow key={index} className="border-amber-700 hover:bg-gray-900">

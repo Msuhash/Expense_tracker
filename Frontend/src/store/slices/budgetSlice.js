@@ -103,7 +103,7 @@ const budgetSlice = createSlice({
             .addCase(fetchBudget.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
-                state.budget = action.payload || []
+                state.budget = Array.isArray(action.payload) ? action.payload : []
             })
             .addCase(fetchBudget.rejected, (state, action) => {
                 state.loading = false;
