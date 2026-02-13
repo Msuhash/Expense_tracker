@@ -21,12 +21,18 @@ const PORT = process.env.PORT || 5000;
 //middleware to handle cors
 
 app.use(
-    cors({
-        origin: [process.env.CLIENT_URL, "http://localhost:5174", "https://expense-tracker-swart-eta.vercel.app"],
-        methods: ["POST", "PUT", "DELETE", "GET"],
-        allowedHeaders: ["Content-Type", "Authorization"],
-        credentials: true
-    })
+  cors({
+    origin: [
+      process.env.CLIENT_URL,
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "https://expense-tracker-swart-eta.vercel.app",
+      "https://expense-tracker-1s0tfggct-suhash-ms-projects.vercel.app"
+    ],
+    methods: ["POST", "PUT", "DELETE", "GET"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
+  })
 )
 
 connectDB()
