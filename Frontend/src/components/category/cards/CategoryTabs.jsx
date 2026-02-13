@@ -117,7 +117,7 @@ const CategoryTabs = () => {
                                     {(() => {
                                         const categoryBudget = budget.find(b => b.category.toLowerCase() === category.name.toLowerCase());
                                         const percentage = categoryBudget ? (categoryBudget.amount / categoryBudget.limit) * 100 : 0;
-                                        const amountSpent = categoryDistribution?.expenseCategories?.find(item => item.category === category.name)?.amount || 0
+                                        const amountSpent = Array.isArray(categoryDistribution?.expenseCategories) ? categoryDistribution.expenseCategories.find(item => item.category === category.name)?.amount || 0 : 0;
                                         return categoryBudget ? (
                                             <div className='space-y-3 w-full'>
                                                 <div className='flex items-center justify-between text-sm'>
@@ -161,7 +161,7 @@ const CategoryTabs = () => {
                                             </div>
                                         ) : (
                                             <div>
-                                                <p className='text-sm font-bold font-sans' style={{ color: category.color }}>Amount Spent: {categoryDistribution?.expenseCategories?.find(item => item.category === category.name)?.amount || 0}</p>
+                                                <p className='text-sm font-bold font-sans' style={{ color: category.color }}>Amount Spent: {Array.isArray(categoryDistribution?.expenseCategories) ? categoryDistribution.expenseCategories.find(item => item.category === category.name)?.amount || 0 : 0}</p>
                                                 <Button className='w-full bg-amber-600 text-black hover:bg-amber-700 mt-6' onClick={() => setIsAddBudgetOpen(true)}>Set Budget</Button>
                                             </div>
                                         );
@@ -197,7 +197,7 @@ const CategoryTabs = () => {
                                     ) : null}
                                 </CardHeader>
                                 <CardContent>
-                                    <p className='text-sm font-bold font-sans' style={{ color: category.color }}>Amount Got: {categoryDistribution?.incomeCategories?.find(item => item.category === category.name)?.amount || 0}</p>
+                                    <p className='text-sm font-bold font-sans' style={{ color: category.color }}>Amount Got: {Array.isArray(categoryDistribution?.incomeCategories) ? categoryDistribution.incomeCategories.find(item => item.category === category.name)?.amount || 0 : 0}</p>
                                 </CardContent>
                             </Card>
                         ))}
