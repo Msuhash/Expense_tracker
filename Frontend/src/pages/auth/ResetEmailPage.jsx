@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
@@ -13,6 +14,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import EntryPage from '../EntryPage';
 
 const ResetEmailPage = () => {
+
+  const navigate = useNavigate();
 
   const isLoading = useSelector(state => state.ui.isLoading)
   const [step, setStep] = useState('email') // 'email', 'otp', 'password'
@@ -129,21 +132,11 @@ const ResetEmailPage = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
             className="w-full">
-            <ResetPasswordPage onSuccess={() => setStep('login')} />
+            <ResetPasswordPage onSuccess={() => navigate('/')} />
           </motion.div>
         )}
 
-        {step === 'login' && (
-          <motion.div
-            key="login" // 👈 unique key for SignUpForm
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="w-full">
-            <EntryPage />
-          </motion.div>
-        )}
+
       </AnimatePresence>
     </div>
   );
