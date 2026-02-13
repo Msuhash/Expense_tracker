@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import axios from 'axios';
+import { sendResetOtp, verifyResetOtp } from '../../services/authServices';
 import { toast } from 'react-toastify';
 
 const ResetOtpPage = ({ email, onOtpVerified }) => {
@@ -10,7 +10,7 @@ const ResetOtpPage = ({ email, onOtpVerified }) => {
     useEffect(() => {
         const sendOtp = async () => {
             try {
-                const res = await sendResetOtp(email);
+                const res = await sendResetOtp({ email: email });
                 if (res.success) {
                     toast.success(res.message);
                 }
@@ -37,7 +37,7 @@ const ResetOtpPage = ({ email, onOtpVerified }) => {
     const handleResendOtp = async () => {
         if (timer > 0) return;
         try {
-            const res = await sendResetOtp(email);
+            const res = await sendResetOtp({ email: email });
             if (res.success) {
                 toast.success(res.message);
                 setTimer(30);

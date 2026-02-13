@@ -30,7 +30,7 @@ const ResetEmailPage = () => {
     setEmail(data.email)
     try {
 
-      const res = await checkIsAuth(email)
+      const res = await checkIsAuth(data.email)
 
       if (res.success) {
         toast.success("Your Account is Verified")
