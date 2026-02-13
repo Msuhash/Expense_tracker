@@ -132,7 +132,7 @@ const ResetEmailPage = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
             className="w-full">
-            <ResetPasswordPage onSuccess={() => navigate('/')} />
+            <ResetPasswordPage onSuccess={() => navigate('/dashboard')} />
           </motion.div>
         )}
 
