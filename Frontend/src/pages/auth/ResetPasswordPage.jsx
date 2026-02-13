@@ -4,7 +4,7 @@ import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../store/slices/authSlice';
+import { logout, fetchUserData } from '../../store/slices/authSlice';
 import { resetPassword } from '../../services/authServices';
 
 const ResetPasswordPage = ({ onSuccess }) => {
@@ -34,8 +34,7 @@ const ResetPasswordPage = ({ onSuccess }) => {
 
     if (res && res.success) {
       toast.success(res.message);
-      localStorage.removeItem("token");
-      dispatch(logout());
+      dispatch(fetchUserData());
       onSuccess();
     } else {
       toast.error(res?.message || "Something went wrong");
