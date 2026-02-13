@@ -35,7 +35,7 @@ export const getCategory = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        const category = await Category.find({ $or: [{ userId: user.id }, { userId: null }] }).sort({ name: 1 });
+        const category = await Category.find({ $or: [{ userId: user.id }, { userId: undefined }, { userId: null }] }).sort({ name: 1 });
         res.status(200).json(category);
     } catch (error) {
         res.status(500).json({ message: error.message });
