@@ -13,7 +13,7 @@ export const fetchBudget = createAsyncThunk(
     async (__, { rejectWithValue }) => {
         try {
             const response = await BudgetService.getBudget();
-            return response.data;
+            return response;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);
         }
@@ -25,7 +25,7 @@ export const fetchSummary = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await BudgetService.getSummary();
-            return response.data;
+            return response;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);
         }
