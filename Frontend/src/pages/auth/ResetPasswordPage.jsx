@@ -24,20 +24,21 @@ const ResetPasswordPage = ({ onSuccess }) => {
   })
 
   const onSubmit = async (data) => {
+    let res;
     try {
-      const res = await resetPassword(data);
-      if (res.success) {
-        toast.success(res.message);
-        localStorage.removeItem("token");
-        dispatch(logout());
-        onSuccess();
-      } else {
-        toast.error(res.message);
-      }
+      res = await resetPassword(data);
     } catch (error) {
-      if (!error.response || error.response.status !== 200) {
-        toast.error(error.response?.data?.message || "Reset failed");
-      }
+      toast.error(error.response?.data?.message || "Reset failed");
+      return;
+    }
+
+    if (res && res.success) {
+      toast.success(res.message);
+      localStorage.removeItem("token");
+      dispatch(logout());
+      onSuccess();
+    } else {
+      toast.error(res?.message || "Something went wrong");
     }
   }
 
