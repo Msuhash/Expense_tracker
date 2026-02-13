@@ -60,13 +60,13 @@ const SignUpForm = ({ setShowPages, onSubmit }) => {
             <span>Set Password</span>
             <input
               type={showPassword ? "text" : "password"}
-              className={`input w-full outline-1 border-none ${errors.password ? "outline-red-700 focus:outline-red-700" : "outline-amber-700 focus:outline-amber-800"}`}
+              className={`input w-full pr-10 outline-1 border-none ${errors.password ? "outline-red-700 focus:outline-red-700" : "outline-amber-700 focus:outline-amber-800"}`}
               placeholder="Enter The Password" {...register("password")}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer z-10"
             >
               {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
             </button>

@@ -199,12 +199,12 @@ const Profile = () => {
                 placeholder="Enter current password"
                 value={passwordData.currentpassword}
                 onChange={handlePasswordChange}
-                className='w-full bg-black text-amber-700 placeholder-amber-900 border-2 border-amber-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
+                className='w-full bg-black text-amber-700 placeholder-amber-900 border-2 border-amber-700 rounded-lg px-4 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
               />
               <button
                 type="button"
                 onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                className="absolute right-3 bottom-3 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+                className="absolute right-3 bottom-3 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer z-10"
               >
                 {showCurrentPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
               </button>
@@ -217,12 +217,12 @@ const Profile = () => {
                 placeholder="Enter new password"
                 value={passwordData.newPassword}
                 onChange={handlePasswordChange}
-                className='w-full bg-black text-amber-700 placeholder-amber-900 border-2 border-amber-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
+                className='w-full bg-black text-amber-700 placeholder-amber-900 border-2 border-amber-700 rounded-lg px-4 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
               />
               <button
                 type="button"
                 onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-3 bottom-3 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+                className="absolute right-3 bottom-3 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer z-10"
               >
                 {showNewPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
               </button>
@@ -235,12 +235,12 @@ const Profile = () => {
                 placeholder="Confirm new password"
                 value={passwordData.confirmPassword}
                 onChange={handlePasswordChange}
-                className='w-full bg-black text-amber-700 placeholder-amber-900 border-2 border-amber-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
+                className='w-full bg-black text-amber-700 placeholder-amber-900 border-2 border-amber-700 rounded-lg px-4 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 bottom-3 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+                className="absolute right-3 bottom-3 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer z-10"
               >
                 {showConfirmPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
               </button>

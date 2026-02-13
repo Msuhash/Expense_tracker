@@ -61,8 +61,8 @@ const LoginForm = ({ setShowPages, onSubmit }) => {
                   type="email"
                   {...register("email")}
                   className={`input outline-1 border-none ${errors.email
-                      ? "outline-red-700 focus:outline-red-700"
-                      : "outline-amber-700 focus:outline-amber-800"
+                    ? "outline-red-700 focus:outline-red-700"
+                    : "outline-amber-700 focus:outline-amber-800"
                     }`}
                   placeholder="Enter Your Email"
                 />
@@ -76,16 +76,16 @@ const LoginForm = ({ setShowPages, onSubmit }) => {
                 <input
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
-                  className={`input w-full outline-1 border-none ${errors.password
-                      ? "outline-red-700 focus:outline-red-700"
-                      : "outline-amber-700 focus:outline-amber-800"
+                  className={`input w-full pr-10 outline-1 border-none ${errors.password
+                    ? "outline-red-700 focus:outline-red-700"
+                    : "outline-amber-700 focus:outline-amber-800"
                     }`}
                   placeholder="Enter Your Password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer z-10"
                 >
                   {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
                 </button>
