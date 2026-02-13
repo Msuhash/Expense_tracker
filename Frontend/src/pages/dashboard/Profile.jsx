@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchUserData, updateUsername, updatePassword, logoutUser } from "../../store/slices/authSlice"
 import { MdVerifiedUser } from "react-icons/md";
 import { GoUnverified } from "react-icons/go";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,6 +21,10 @@ const Profile = () => {
     newPassword: "",
     confirmPassword: ""
   });
+
+  const [showCurrentPassword, setShowCurrentPassword] = React.useState(false);
+  const [showNewPassword, setShowNewPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
 
 
@@ -170,38 +175,59 @@ const Profile = () => {
 
         {isChangingPassword ? (
           <div className='space-y-4'>
-            <div>
+            <div className="relative">
               <label className='block text-sm font-medium text-gray-700 mb-1'>Current Password</label>
               <input
-                type="password"
+                type={showCurrentPassword ? "text" : "password"}
                 name="currentpassword"
                 placeholder="Enter current password"
                 value={passwordData.currentpassword}
                 onChange={handlePasswordChange}
                 className='w-full bg-black text-amber-700 placeholder-amber-900 border-2 border-amber-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
               />
+              <button
+                type="button"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                className="absolute right-3 bottom-3 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+              >
+                {showCurrentPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+              </button>
             </div>
-            <div>
+            <div className="relative">
               <label className='block text-sm font-medium text-gray-700 mb-1'>New Password</label>
               <input
-                type="password"
+                type={showNewPassword ? "text" : "password"}
                 name="newPassword"
                 placeholder="Enter new password"
                 value={passwordData.newPassword}
                 onChange={handlePasswordChange}
                 className='w-full bg-black text-amber-700 placeholder-amber-900 border-2 border-amber-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
               />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute right-3 bottom-3 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+              >
+                {showNewPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+              </button>
             </div>
-            <div>
+            <div className="relative">
               <label className='block text-sm font-medium text-gray-700 mb-1'>Confirm New Password</label>
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Confirm new password"
                 value={passwordData.confirmPassword}
                 onChange={handlePasswordChange}
                 className='w-full bg-black text-amber-700 placeholder-amber-900 border-2 border-amber-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 bottom-3 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+              >
+                {showConfirmPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+              </button>
             </div>
             <div className='flex flex-col sm:flex-row gap-3 md:gap-4'>
               <button

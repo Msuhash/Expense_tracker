@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { HiEye, HiEyeOff } from "react-icons/hi";
 import { GiFireDash } from "react-icons/gi";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { useForm } from 'react-hook-form';
@@ -18,6 +19,8 @@ const SignUpForm = ({ setShowPages, onSubmit }) => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div>
@@ -53,13 +56,20 @@ const SignUpForm = ({ setShowPages, onSubmit }) => {
           </label>
           {errors.email && <p className='text-red-700'>{errors.email.message}</p>}
 
-          <label className="floating-label">
+          <label className="floating-label relative">
             <span>Set Password</span>
             <input
-              type="password"
-              className={`input outline-1 border-none ${errors.password ? "outline-red-700 focus:outline-red-700" : "outline-amber-700 focus:outline-amber-800"}`}
+              type={showPassword ? "text" : "password"}
+              className={`input w-full outline-1 border-none ${errors.password ? "outline-red-700 focus:outline-red-700" : "outline-amber-700 focus:outline-amber-800"}`}
               placeholder="Enter The Password" {...register("password")}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+            >
+              {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+            </button>
           </label>
           {errors.password && <p className='text-red-700'>{errors.password.message}</p>}
 

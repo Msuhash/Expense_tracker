@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -22,6 +23,9 @@ const ResetPasswordPage = ({ onSuccess }) => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   })
+
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showCPassword, setShowCPassword] = useState(false);
 
   const onSubmit = async (data) => {
     let res;
@@ -51,23 +55,37 @@ const ResetPasswordPage = ({ onSuccess }) => {
 
           <p className='text-center pb-2 text-xs font-semibold text-amber-600'>Enter New Password To Reset</p>
 
-          <label className="floating-label">
+          <label className="floating-label relative">
             <span>Set New Password</span>
             <input
-              type="password"
-              className={`input outline-1 border-none ${errors.newPassword ? "outline-red-700 focus:outline-red-700" : "outline-amber-700 focus:outline-amber-800"}`}
+              type={showNewPassword ? "text" : "password"}
+              className={`input w-full outline-1 border-none ${errors.newPassword ? "outline-red-700 focus:outline-red-700" : "outline-amber-700 focus:outline-amber-800"}`}
               placeholder="Enter New Password" {...register("newPassword")}
             />
+            <button
+              type="button"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+            >
+              {showNewPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+            </button>
           </label>
           {errors.newPassword && <p className='text-red-700'>{errors.newPassword.message}</p>}
 
-          <label className="floating-label">
+          <label className="floating-label relative">
             <span>Confirm Password</span>
             <input
-              type="password"
-              className={`input outline-1 border-none ${errors.cPassword ? "outline-red-700 focus:outline-red-700" : "outline-amber-700 focus:outline-amber-800"}`}
+              type={showCPassword ? "text" : "password"}
+              className={`input w-full outline-1 border-none ${errors.cPassword ? "outline-red-700 focus:outline-red-700" : "outline-amber-700 focus:outline-amber-800"}`}
               placeholder="Enter Same Password" {...register("cPassword")}
             />
+            <button
+              type="button"
+              onClick={() => setShowCPassword(!showCPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+            >
+              {showCPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+            </button>
           </label>
           {errors.cPassword && <p className='text-red-700'>{errors.cPassword.message}</p>}
 

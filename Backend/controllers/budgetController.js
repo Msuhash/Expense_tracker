@@ -1,5 +1,6 @@
 import Budget from "../models/budgetModel.js";
 import User from "../models/userModel.js"
+import Expense from "../models/expenseModel.js"
 
 export const createBudget = async (req, res) => {
     const { category, startDate, endDate, limit } = req.body;
@@ -15,12 +16,34 @@ export const createBudget = async (req, res) => {
             return res.status(404).json({ message: "User not found" })
         }
 
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        const expense = await Expense.aggregate([
+            {
+                $match: {
+                    userId: user._id,
+                    category: category,
+                    date: { $gte: start, $lte: end }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: "$amount" }
+                }
+            }
+        ])
+
+        const totalExpense = expense[0]?.total || 0;
+
         const budget = new Budget({
             userId: user.id,
             category,
             startDate,
             endDate,
-            limit
+            limit,
+            amount: totalExpense
         })
 
         await budget.save();

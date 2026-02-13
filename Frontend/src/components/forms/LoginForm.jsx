@@ -1,28 +1,31 @@
 import React, { useState } from 'react'
+import { HiEye, HiEyeOff } from "react-icons/hi";
 import { GiFireDash } from "react-icons/gi";
 import { FaIndianRupeeSign } from "react-icons/fa6";
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
-import {yupResolver} from '@hookform/resolvers/yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import ResetEmailPage from '../../pages/auth/ResetEmailPage';
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from 'react-redux';
 
-const LoginForm = ({setShowPages, onSubmit}) => {
-  
+const LoginForm = ({ setShowPages, onSubmit }) => {
+
   const [changePage, setChangePage] = useState(false)
   const dispatch = useDispatch()
-  const isLoading = useSelector(state=> state.ui.isLoading)
-  
+  const isLoading = useSelector(state => state.ui.isLoading)
+
   let schema = Yup.object().shape({
-      email : Yup.string().required("Email Is Required").email("Enter Valid Email"),
-      password : Yup.string().required("Enter The password").min(8,"Password Must Have atleast 8 Characters")
+    email: Yup.string().required("Email Is Required").email("Enter Valid Email"),
+    password: Yup.string().required("Enter The password").min(8, "Password Must Have atleast 8 Characters")
       .matches(/^(?=.*[0-9])(?=.*[A-Za-z]).{8,32}$/, "Password must include letters and number")
-    })
-  
-    const {register, handleSubmit, formState: {errors}} = useForm({
-      resolver : yupResolver(schema)
-    });
+  })
+
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema)
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
 
 
   return (
@@ -57,11 +60,10 @@ const LoginForm = ({setShowPages, onSubmit}) => {
                 <input
                   type="email"
                   {...register("email")}
-                  className={`input outline-1 border-none ${
-                    errors.email
+                  className={`input outline-1 border-none ${errors.email
                       ? "outline-red-700 focus:outline-red-700"
                       : "outline-amber-700 focus:outline-amber-800"
-                  }`}
+                    }`}
                   placeholder="Enter Your Email"
                 />
               </label>
@@ -69,24 +71,30 @@ const LoginForm = ({setShowPages, onSubmit}) => {
                 <p className="text-red-700">{errors.email.message}</p>
               )}
 
-              <label className="floating-label">
+              <label className="floating-label relative">
                 <span>Password</span>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   {...register("password")}
-                  className={`input outline-1 border-none ${
-                    errors.password
+                  className={`input w-full outline-1 border-none ${errors.password
                       ? "outline-red-700 focus:outline-red-700"
                       : "outline-amber-700 focus:outline-amber-800"
-                  }`}
+                    }`}
                   placeholder="Enter Your Password"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-600 hover:text-amber-500 focus:outline-none cursor-pointer"
+                >
+                  {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+                </button>
               </label>
               {errors.password && (
                 <p className="text-red-700">{errors.password.message}</p>
               )}
 
-              <span className="text-xs text-amber-700 underline focus: cursor-pointer" onClick={()=>setChangePage(true)}>
+              <span className="text-xs text-amber-700 underline focus: cursor-pointer" onClick={() => setChangePage(true)}>
                 Forget Password?
               </span>
               <button
@@ -113,19 +121,19 @@ const LoginForm = ({setShowPages, onSubmit}) => {
           </div>
         </>
       )}
-      
+
       <AnimatePresence mode="wait">
-      {changePage && (
-        <motion.div
-          key="resetEmail" // 👈 unique key for SignUpForm
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
-          className="w-full">
-          <ResetEmailPage/>
-        </motion.div>
-      )}
+        {changePage && (
+          <motion.div
+            key="resetEmail" // 👈 unique key for SignUpForm
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="w-full">
+            <ResetEmailPage />
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );
