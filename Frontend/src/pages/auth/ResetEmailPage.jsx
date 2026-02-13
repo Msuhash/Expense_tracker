@@ -9,8 +9,8 @@ import { checkIsAuth } from '../../services/authServices';
 import { toast } from 'react-toastify';
 import ResetOtpPage from './ResetOtpPage.jsx';
 import ResetPasswordPage from './ResetPasswordPage.jsx';
-import Login from './Login.jsx';
 import { AnimatePresence, motion } from 'framer-motion';
+import EntryPage from '../EntryPage';
 
 const ResetEmailPage = () => {
 
@@ -141,7 +141,7 @@ const ResetEmailPage = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
             className="w-full">
-            <Login />
+            <EntryPage />
           </motion.div>
         )}
       </AnimatePresence>

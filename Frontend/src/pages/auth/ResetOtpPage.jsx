@@ -10,9 +10,9 @@ const ResetOtpPage = ({ email, onOtpVerified }) => {
     useEffect(() => {
         const sendOtp = async () => {
             try {
-                const res = await axios.post("http://localhost:8000/api/auth/send-reset-otp", { email });
-                if (res.data.success) {
-                    toast.success(res.data.message);
+                const res = await sendResetOtp(email);
+                if (res.success) {
+                    toast.success(res.message);
                 }
             } catch (error) {
                 toast.error(error.response?.data?.message || "Failed to send OTP");
@@ -37,12 +37,12 @@ const ResetOtpPage = ({ email, onOtpVerified }) => {
     const handleResendOtp = async () => {
         if (timer > 0) return;
         try {
-            const res = await axios.post("http://localhost:8000/api/auth/send-reset-otp", { email });
-            if (res.data.success) {
-                toast.success(res.data.message);
+            const res = await sendResetOtp(email);
+            if (res.success) {
+                toast.success(res.message);
                 setTimer(30);
             } else {
-                toast.error(res.data.message);
+                toast.error(res.message);
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to resend OTP");
@@ -81,12 +81,12 @@ const ResetOtpPage = ({ email, onOtpVerified }) => {
         }
 
         try {
-            const res = await axios.post("http://localhost:8000/api/auth/verify-reset-otp", { email, otp });
-            if (res.data.success) {
-                toast.success(res.data.message);
+            const res = await verifyResetOtp({ email, otp });
+            if (res.success) {
+                toast.success(res.message);
                 onOtpVerified();
             } else {
-                toast.error(res.data.message);
+                toast.error(res.message);
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Verification failed");

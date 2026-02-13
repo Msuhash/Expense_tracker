@@ -2,15 +2,12 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
-import Login from './Login';
+import { resetPassword } from '../../services/authServices';
 
 const ResetPasswordPage = ({ onSuccess }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const schema = Yup.object().shape({
@@ -28,14 +25,14 @@ const ResetPasswordPage = ({ onSuccess }) => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/reset-password", data, { withCredentials: true });
-      if (res.data.success) {
-        toast.success(res.data.message);
+      const res = await resetPassword(data);
+      if (res.success) {
+        toast.success(res.message);
         localStorage.removeItem("token");
         dispatch(logout());
         onSuccess();
       } else {
-        toast.error(res.data.message);
+        toast.error(res.message);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Reset failed");
