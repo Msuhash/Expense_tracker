@@ -10,11 +10,11 @@ const initialState = {
 
 export const fetchBudget = createAsyncThunk(
     "budget/fetchBudget",
-    async (__, {rejectWithValue}) => {
-        try{
+    async (__, { rejectWithValue }) => {
+        try {
             const response = await BudgetService.getBudget();
-            return response;
-        }catch(error){
+            return response.data;
+        } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
@@ -22,11 +22,11 @@ export const fetchBudget = createAsyncThunk(
 
 export const fetchSummary = createAsyncThunk(
     "budget/fetchSummary",
-    async (_, {rejectWithValue}) => {
-        try{
+    async (_, { rejectWithValue }) => {
+        try {
             const response = await BudgetService.getSummary();
-            return response;
-        }catch(error){
+            return response.data;
+        } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
@@ -34,13 +34,13 @@ export const fetchSummary = createAsyncThunk(
 
 export const addBudget = createAsyncThunk(
     "budget/addBudget",
-    async (budgetData, {rejectWithValue, dispatch}) => {
-        try{
+    async (budgetData, { rejectWithValue, dispatch }) => {
+        try {
             const response = await BudgetService.addBudget(budgetData);
             await dispatch(fetchBudget());
             await dispatch(fetchSummary());
-            return response;            
-        }catch(error){
+            return response;
+        } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message)
         }
     }
@@ -48,14 +48,14 @@ export const addBudget = createAsyncThunk(
 
 export const deleteBudget = createAsyncThunk(
     "budget/deleteBudget",
-    async (id, {rejectWithValue, dispatch}) => {
-        try{
+    async (id, { rejectWithValue, dispatch }) => {
+        try {
             const response = await BudgetService.deleteBudget(id);
             await dispatch(fetchBudget());
             await dispatch(fetchSummary());
             return response
 
-        }catch(error){
+        } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message)
 
         }
@@ -64,14 +64,14 @@ export const deleteBudget = createAsyncThunk(
 
 export const updateBudget = createAsyncThunk(
     "budget/updateBudget",
-    async ({id, budgetData}, {rejectWithValue, dispatch}) => {
-        try{
+    async ({ id, budgetData }, { rejectWithValue, dispatch }) => {
+        try {
             const response = await BudgetService.updateBudget(id, budgetData);
             await dispatch(fetchBudget());
             await dispatch(fetchSummary());
             return response;
 
-        }catch(error){
+        } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message)
         }
     }
@@ -96,7 +96,7 @@ const budgetSlice = createSlice({
     initialState,
     extraReducers: (builder) => {
         builder
-            .addCase(fetchBudget.pending, (state)=> {
+            .addCase(fetchBudget.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
