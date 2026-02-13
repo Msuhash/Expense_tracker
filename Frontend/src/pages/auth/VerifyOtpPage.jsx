@@ -3,11 +3,14 @@ import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { FourSquare } from 'react-loading-indicators'
+import { useDispatch } from 'react-redux'
+import { fetchUserData } from '../../store/slices/authSlice'
 
 const VerifyOtpPage = () => {
 
     const inputRef = useRef([])
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [isLoading, setIsLoading] = useState(false)
     const otpSentRef = useRef(false);
 
@@ -51,6 +54,7 @@ const VerifyOtpPage = () => {
             const res = await verifyOtp({ otp: fullOtp })
 
             if (res.success) {
+                await dispatch(fetchUserData())
                 toast.success("Account Verified Successfully!")
                 navigate("/dashboard")
             }
