@@ -1,19 +1,40 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import logo from "../assets/elogo.png";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import Footer from "../components/layout/Footer";
 
-const EntryPage = () => {
-  let isAuthenticated = !!localStorage.getItem("token");
+const EntryPage = ({ initialPage = "welcome" }) => {
+  const { user } = useSelector((state) => state.auth);
+  const isAuthenticated = !!user;
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const getActivePage = () => {
+    if (location.pathname === "/login") return "login";
+    if (location.pathname === "/signUp" || location.pathname === "/signup") return "signup";
+    return initialPage;
+  };
+
+  const showPages = getActivePage();
   const [showButton, setShowButton] = useState(false);
-  const [showPages, setShowPages] = useState("welcome");
 
-  let handleHiddenButton = () => {
+  const handleHiddenButton = () => {
     setShowButton((prev) => !prev);
+  };
+
+  const handlePageChange = (page) => {
+    if (page === "login") {
+      navigate("/login");
+    } else if (page === "signup") {
+      navigate("/signUp");
+    } else {
+      navigate("/");
+    }
   };
 
   return isAuthenticated ? (
@@ -62,7 +83,7 @@ const EntryPage = () => {
                         <li>
                           <button
                             className="btn btn-warning px-5"
-                            onClick={() => setShowPages("login")}
+                            onClick={() => handlePageChange("login")}
                           >
                             Login
                           </button>
@@ -70,7 +91,7 @@ const EntryPage = () => {
                         <li>
                           <button
                             className="btn btn-warning px-4"
-                            onClick={() => setShowPages("signup")}
+                            onClick={() => handlePageChange("signup")}
                           >
                             SignUp
                           </button>
@@ -91,7 +112,7 @@ const EntryPage = () => {
                 transition={{ duration: 0.4, ease: "easeInOut" }}
                 className="w-full"
               >
-                <Login setShowPages = {setShowPages} />
+                <Login setShowPages={handlePageChange} />
               </motion.div>
             )}
 
@@ -104,7 +125,7 @@ const EntryPage = () => {
                 transition={{ duration: 0.4, ease: "easeInOut" }}
                 className="flex justify-center items-center w-full"
               >
-                <SignUp setShowPages = {setShowPages} />
+                <SignUp setShowPages={handlePageChange} />
               </motion.div>
             )}
           </AnimatePresence>

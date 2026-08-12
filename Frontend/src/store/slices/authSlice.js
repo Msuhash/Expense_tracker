@@ -84,7 +84,7 @@ const authSlice = createSlice({
             })
             .addCase(fetchUserData.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload.message;
+                state.error = action.payload?.message || action.payload || null;
             })
 
         builder

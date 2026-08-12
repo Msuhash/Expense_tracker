@@ -71,14 +71,14 @@ function App() {
 
           ) : (
             <>
-              <Route path='/' element={<EntryPage />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/signUp' element={<SignUp />} />
+              <Route path='/' element={<EntryPage initialPage="welcome" />} />
+              <Route path='/login' element={<EntryPage initialPage="login" />} />
+              <Route path='/signUp' element={<EntryPage initialPage="signup" />} />
               <Route path='/verifyOtpPage' element={<VerifyOtpPage />} />
               <Route path='/resetOtpPage' element={<ResetOtpPage />} />
               <Route path='/resetEmailPage' element={<ResetEmailPage />} />
               <Route path='/resetPasswordPage' element={<ResetPasswordPage />} />
-              <Route path="*" element={<Navigate to="/login" replace />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </>
           )}
           {/* <Route path='/login' element={<Login />} />
